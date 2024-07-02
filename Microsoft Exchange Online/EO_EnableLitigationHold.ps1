@@ -1,15 +1,18 @@
 <#
 .SYNOPSIS
     Enable Litigation Hold on all mailboxes in an Exchange Online environment.
+    
 .DESCRIPTION
     This script connects to Exchange Online, retrieves all mailboxes, and attempts to enable Litigation Hold on each one.
     If a mailbox does not have the required license for Litigation Hold, it handles the error and continues with the next mailbox.
     After enabling Litigation Hold, the script loops through the mailboxes and lists those with Litigation Hold enabled.
     Successful results are displayed in a table format.
+    
 .AUTHOR
     Steve Springall
+    
 .VERSION
-    1.5
+    1.6
 #>
 
 # Clear Host
@@ -80,7 +83,7 @@ foreach ($mailbox in $mailboxes) {
 
     try {
         Set-Mailbox -Identity $mailbox.UserPrincipalName -LitigationHoldEnabled $true
-        Write-Host "Attemtping for mailbox: $($mailbox.UserPrincipalName)" -ForegroundColor Green
+        Write-Host "Attempting for mailbox: $($mailbox.UserPrincipalName)" -ForegroundColor Green
         $SuccessResults += [PSCustomObject]@{
             UserPrincipalName = $mailbox.UserPrincipalName
             DisplayName       = $mailbox.DisplayName
