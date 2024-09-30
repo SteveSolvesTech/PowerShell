@@ -8,7 +8,7 @@
     to block the specified range for inbound connections to the server.
 
     .VERSION
-    1.3
+    1.4
 
     .AUTHOR
     Steve Springall
@@ -43,6 +43,9 @@ if (-Not (Test-Path $filePath)) {
 # Get just the filename without extension for easier filtering
 $fileName = [System.IO.Path]::GetFileNameWithoutExtension($filePath)
 
+# Define the group name for firewall rules
+$groupName = "GeoBlock $fileName"
+
 # Import IP ranges from the file
 $ipRanges = Get-Content -Path $filePath
 
@@ -54,9 +57,9 @@ foreach ($ipRange in $ipRanges) {
     # Generate a unique name for the firewall rule including the filename
     $ruleName = "Block IP Range ($fileName) - $ipRange"
 
-    # Add the firewall rule and suppress the output
+    # Add the firewall rule with a specified group and suppress the output
     try {
-        New-NetFirewallRule -DisplayName $ruleName -Direction Inbound -Action Block -RemoteAddress $ipRange -ErrorAction SilentlyContinue | Out-Null
+        New-NetFirewallRule -DisplayName $ruleName -Direction Inbound -Action Block -RemoteAddress $ipRange -Group $groupName -ErrorAction SilentlyContinue | Out-Null
         Write-Host "Successfully blocked IP range: $ipRange" -ForegroundColor Green
         $rulesAdded++
     }
