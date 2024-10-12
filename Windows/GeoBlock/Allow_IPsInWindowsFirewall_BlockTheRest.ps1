@@ -6,7 +6,7 @@
     This script prompts the user to select a file containing IP ranges in CIDR notation.
     It then iterates through each entry in the file and creates a Windows Firewall rule 
     to allow the specified range for inbound connections to the server. Once the allow rules are created, all 
-	other remote connections will be blocked. Existing allow rule are not affected.
+    other remote connections will be blocked. Existing allow rule are not affected.
 
     .VERSION
     1.7
